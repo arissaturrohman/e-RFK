@@ -63,6 +63,7 @@ include('assets/inc/config.php');
                             <th scope="col">Anggaran</th>
                             <th scope="col">Realisasi</th>
                             <th scope="col">%</th>
+                            <th scope="col">Keterangan</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -87,10 +88,11 @@ include('assets/inc/config.php');
                                 <td><?= number_format($anggaran); ?></td>
                                 <td><?= number_format($realisasi); ?></td>
                                 <td><?= number_format(($realisasi / $anggaran) * 100, 2); ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
                             </tr>
                         <?php } ?>
                         <tr>
-                            <td colspan="4" class="text-center">
+                            <td colspan="5" class="text-center">
                                 <?php
                                 $kosong = '';
                                 if (mysqli_num_rows($sql) == $kosong) {
