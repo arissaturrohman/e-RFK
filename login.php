@@ -22,21 +22,21 @@ if (isset($_POST['login'])) {
         if (password_verify($password, $row['password'])) {
 
             $_SESSION['login'] = true;
-            if ($row['level']  = "admin") {
+            if ($row['level']  == "Admin") {
                 $_SESSION['username'] = $username;
                 $_SESSION['nama']     = $row['nama'];
                 $_SESSION['tahun']    = $tahun;
-                $_SESSION['level']    = "admin";
+                $_SESSION['level']    = "Admin";
 
-                header('location:admin.php');
+                header('location:index.php');
                 exit;
-            } elseif ($row['level'] = "user") {
+            } elseif ($row['level'] == "User") {
                 $_SESSION['username'] = $username;
                 $_SESSION['nama']     = $row['nama'];
                 $_SESSION['tahun']    = $tahun;
-                $_SESSION['level']    = "user";
+                $_SESSION['level']    = "User";
 
-                header('location:admin.php');
+                header('location:index.php');
                 exit;
             }
         }

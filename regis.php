@@ -77,8 +77,8 @@ if (isset($_POST['registrasi'])) {
                                         <div class="form-group">
                                             <select name="level" class="form-control">
                                                 <option value="">Pilih Level</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="user">User</option>
+                                                <option value="Admin">Admin</option>
+                                                <option value="User">User</option>
                                             </select>
                                         </div>
                                         <button type="submit" name="registrasi" class="btn btn-primary btn-user btn-block">

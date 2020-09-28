@@ -1,3 +1,3 @@
 <?php 
 
-$conn = mysqli_connect('localhost', 'root', '', 'db_rfk');
+$conn = mysqli_connect('localhost', 'root', '', 'db_erfk');
