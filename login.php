@@ -26,6 +26,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['username'] = $username;
                 $_SESSION['nama']     = $row['nama'];
                 $_SESSION['tahun']    = $tahun;
+                $_SESSION['opd']      = $row['opd'];
                 $_SESSION['level']    = "Admin";
 
                 header('location:index.php');
@@ -34,6 +35,7 @@ if (isset($_POST['login'])) {
                 $_SESSION['username'] = $username;
                 $_SESSION['nama']     = $row['nama'];
                 $_SESSION['tahun']    = $tahun;
+                $_SESSION['opd']      = $row['opd'];
                 $_SESSION['level']    = "User";
 
                 header('location:index.php');

@@ -1,6 +1,6 @@
 <div class="card shadow mb-4">
             <div class="card-header bg-secondary py-3">
-              <h6 class="m-0 font-weight-bold text-white">Data Anggaran OPD</h6>
+              <h6 class="m-0 font-weight-bold text-white">Data Anggaran OPD <?= $_SESSION['opd']; ?></h6>
             </div>
             <div class="card-body">
             <div class="row">
@@ -60,9 +60,9 @@
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active my-5" id="jan" role="tabpanel" aria-labelledby="jan-tab">
+            <div class="tab-pane fade show active my-3" id="jan" role="tabpanel" aria-labelledby="jan-tab">
                 
-
+            <div class="table-responsive">
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr class="text-center align-middle">
@@ -87,27 +87,28 @@
                         if (isset($_POST['cari'])) {
                             $cari = $_POST['keterangan'];
 
-                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='januari' AND keterangan='$cari'");
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='januari' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
                         } else {
-                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='januari'");
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='januari' AND opd='$_SESSION[opd]'");
                         }
                         $no = 1;
                         while ($data = $sql->fetch_assoc()) {
                             $anggaran = $data['anggaran'];
-                            $realisasi = $data['realisasi'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
 
 
                         ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= number_format($anggaran); ?></td>
-                                <td><?= number_format($realisasi); ?></td>
-                                <td><?= number_format(($realisasi / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
                                 <td><?= "Anggaran " . $data['keterangan']; ?></td>
-                                <td>Tes</td>
-                                <td>Coba</td>
-                                <td>Jajal</td>
-                                <td>123</td>
                             </tr>
                         <?php } ?>
                         <tr>
@@ -123,93 +124,713 @@
                     </tbody>
                 </table>
             </div>
-            <div class="tab-pane fade my-5" id="peb" role="tabpanel" aria-labelledby="peb-tab">
+        </div>
+            <div class="tab-pane fade my-3" id="peb" role="tabpanel" aria-labelledby="peb-tab">
 
-                <table class="table">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
                     <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Anggaran</th>
-                            <th scope="col">Realisasi</th>
-                            <th scope="col">%</th>
-                            <th scope="col">Keterangan</th>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+
                         if (isset($_POST['cari'])) {
                             $cari = $_POST['keterangan'];
 
-                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='pebruari' AND keterangan='$cari'");
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='pebruari' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
                         } else {
-                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='pebruari'");
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='pebruari' AND opd='$_SESSION[opd]'");
                         }
                         $no = 1;
                         while ($data = $sql->fetch_assoc()) {
                             $anggaran = $data['anggaran'];
-                            $realisasi = $data['realisasi'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
 
 
                         ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= number_format($anggaran); ?></td>
-                                <td><?= number_format($realisasi); ?></td>
-                                <td><?= number_format(($realisasi / $anggaran) * 100, 2); ?></td>
-                                <td><?= $data['keterangan'] ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
                             </tr>
                         <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="tab-pane fade my-5" id="mar" role="tabpanel" aria-labelledby="mar-tab">
+        </div>
+            <div class="tab-pane fade my-3" id="mar" role="tabpanel" aria-labelledby="mar-tab">
 
-                <table class="table">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
                     <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Anggaran</th>
-                            <th scope="col">Realisasi</th>
-                            <th scope="col">%</th>
-                            <th scope="col">Keterangan</th>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+
                         if (isset($_POST['cari'])) {
                             $cari = $_POST['keterangan'];
 
-                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='maret' AND keterangan='$cari'");
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='maret' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
                         } else {
-                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='maret'");
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='maret' AND opd='$_SESSION[opd]'");
                         }
                         $no = 1;
                         while ($data = $sql->fetch_assoc()) {
                             $anggaran = $data['anggaran'];
-                            $realisasi = $data['realisasi'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
 
 
                         ?>
                             <tr>
                                 <td><?= $no++; ?></td>
                                 <td><?= number_format($anggaran); ?></td>
-                                <td><?= number_format($realisasi); ?></td>
-                                <td><?= number_format(($realisasi / $anggaran) * 100, 2); ?></td>
-                                <td><?= $data['keterangan']?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
                             </tr>
                         <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="tab-pane fade" id="apr" role="tabpanel" aria-labelledby="apr-tab">...</div>
-            <div class="tab-pane fade" id="mei" role="tabpanel" aria-labelledby="mei-tab">...</div>
-            <div class="tab-pane fade" id="juni" role="tabpanel" aria-labelledby="juni-tab">...</div>
-            <div class="tab-pane fade" id="juli" role="tabpanel" aria-labelledby="juli-tab">...</div>
-            <div class="tab-pane fade" id="agust" role="tabpanel" aria-labelledby="agust-tab">...</div>
-            <div class="tab-pane fade" id="sept" role="tabpanel" aria-labelledby="sept-tab">...</div>
-            <div class="tab-pane fade" id="okt" role="tabpanel" aria-labelledby="okt-tab">...</div>
-            <div class="tab-pane fade" id="nop" role="tabpanel" aria-labelledby="nop-tab">...</div>
-            <div class="tab-pane fade" id="des" role="tabpanel" aria-labelledby="des-tab">...</div>
+        </div>
+            <div class="tab-pane fade my-3" id="apr" role="tabpanel" aria-labelledby="apr-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='april' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='april' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="mei" role="tabpanel" aria-labelledby="mei-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='mei' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='mei' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="juni" role="tabpanel" aria-labelledby="juni-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='juni' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='juni' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="juli" role="tabpanel" aria-labelledby="juli-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='juli' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='juli' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="agust" role="tabpanel" aria-labelledby="agust-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='agustus' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='agustus' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="sept" role="tabpanel" aria-labelledby="sept-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='september' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='september' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="okt" role="tabpanel" aria-labelledby="okt-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='oktober' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='oktober' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="nop" role="tabpanel" aria-labelledby="nop-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='nopember' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='nopember' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
+            <div class="tab-pane fade my-3" id="des" role="tabpanel" aria-labelledby="des-tab">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="text-center align-middle">
+                            <th rowspan="2" class="align-text-top">#</th>
+                            <th rowspan="2" class="align-text-top">Anggaran</th>
+                            <th colspan="4">Keuangan</th>
+                            <th colspan="2">Fisik</th>
+                            <th rowspan="2" class="align-text-top">Keterangan</th>
+                        </tr>
+                        <tr class="text-center align-middle">
+                            <th >SP2D</th>
+                            <th >%</th>
+                            <th >SPJ</th>
+                            <th >%</th>
+                            <th>Target (%)</th>
+                            <th>Realisasi (%)</th>                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+
+                        if (isset($_POST['cari'])) {
+                            $cari = $_POST['keterangan'];
+
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='desember' AND opd='$_SESSION[opd]' AND keterangan='$cari'");
+                        } else {
+                            $sql = $conn->query("SELECT * FROM tb_anggaran WHERE tahun='$_SESSION[tahun]' AND bulan='desember' AND opd='$_SESSION[opd]'");
+                        }
+                        $no = 1;
+                        while ($data = $sql->fetch_assoc()) {
+                            $anggaran = $data['anggaran'];
+                            $sp2d = $data['sp2d'];
+                            $spj = $data['spj'];
+
+
+                        ?>
+                            <tr>
+                                <td><?= $no++; ?></td>
+                                <td><?= number_format($anggaran); ?></td>
+                                <td><?= number_format($sp2d); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= number_format($spj); ?></td>
+                                <td><?= number_format(($sp2d / $anggaran) * 100, 2); ?></td>
+                                <td><?= $data['target']; ?></td>
+                                <td><?= $data['realisasi']; ?></td>
+                                <td><?= "Anggaran " . $data['keterangan']; ?></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td colspan="9" class="text-center">
+                                <?php
+                                $kosong = '';
+                                if (mysqli_num_rows($sql) == $kosong) {
+                                    echo '<span class="text-danger">Tidak ada data..!!</span>';
+                                }
+                                ?>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </div>
         </div>
     <a href="?page=anggaran&aksi=tambah" class="btn btn-dark">Tambah</a>
     </div>
